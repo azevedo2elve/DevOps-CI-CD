@@ -71,3 +71,83 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Docker
+
+Este projeto está configurado para ser executado em containers Docker, facilitando o deployment e garantindo consistência entre ambientes.
+
+### Pré-requisitos
+
+- Docker instalado na máquina ([Download Docker](https://www.docker.com/get-started))
+- Porta 3000 disponível no host
+
+### Estrutura do Dockerfile
+
+O `Dockerfile` utiliza uma imagem Alpine do Node.js 20, otimizando o tamanho da imagem final:
+
+- **Base**: `node:20-alpine`
+- **Build**: Instala dependências e compila o projeto TypeScript
+- **Runtime**: Executa a aplicação em modo produção
+- **Porta**: Expõe a porta 3000
+
+### Comandos Docker
+
+#### Build da Imagem
+
+Cria a imagem Docker com o nome `dnc-backend`:
+
+```bash
+docker build . -t dnc-backend
+```
+
+#### Executar o Container
+
+Inicia o container em modo detached (background) mapeando a porta 3000:
+
+```bash
+docker run -d --name dnc-backend -p 3000:3000 dnc-backend
+```
+
+**Parâmetros:**
+- `-d`: Executa em background (detached mode)
+- `--name dnc-backend`: Define o nome do container
+- `-p 3000:3000`: Mapeia a porta 3000 do container para a porta 3000 do host
+
+#### Outros Comandos Úteis
+
+```bash
+# Ver containers em execução
+docker ps
+
+# Ver logs do container
+docker logs dnc-backend
+
+# Parar o container
+docker stop dnc-backend
+
+# Iniciar o container novamente
+docker start dnc-backend
+
+# Remover o container
+docker rm dnc-backend
+
+# Remover a imagem
+docker rmi dnc-backend
+
+# Acessar o shell do container
+docker exec -it dnc-backend sh
+```
+
+### Testando a Aplicação
+
+Após iniciar o container, acesse a aplicação em:
+
+```
+http://localhost:3000
+```
+
+### Troubleshooting
+
+- **Porta 3000 em uso**: Altere o mapeamento de porta usando `-p 3001:3000`
+- **Erros de build**: Verifique se todas as dependências estão listadas no `package.json`
+- **Container não inicia**: Verifique os logs com `docker logs dnc-backend`
